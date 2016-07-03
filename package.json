@@ -7,7 +7,10 @@
     "service"
   ],
   "description": "Simple wrapper for persistent detecting something until get the truth.",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hellocreep/true-detective.git"
+  },
   "main": "lib/index.js",
   "scripts": {
     "compile": "babel src -d lib"
