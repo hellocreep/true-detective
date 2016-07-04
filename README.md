@@ -19,15 +19,22 @@ detective.take('job', {
     return 2
   }
 })(() => {
+  // step one
+  // detect something
   return fetch('https://api.github.com/users/github')
     .then((res) => {
       return res.json()
     })
 })((res, times) => {
+  // step two
+  // check the result
   if (times > 5) {
-    // trigger something here
     return true
   }
+})((res, times) => {
+  // step three
+  // execution
+  // tigger something here
 })
 ```
 
@@ -37,13 +44,21 @@ Or with `forever` run this job in the background.
 
 ## API
 
-### detective.take(jobName, [options])(detectFn)(judgeFn)
+### detective.take(jobName, [options])(detectFn)(judgeFn)(executeFn)
 
-This is the only method of detective.
+This is the only method of detective, with 3 steps to do its job.
 
-`detective.take` will return a function which has a callback for any web detections function in there, and must return a `Promise`.
+#### detectFn
 
-And then it will return another function which has a callback for user to check if this detective got the truth, if so, return true. The job will be completed after that.
+DetectFn as the first step, should be a function and must return a `Promise`.
+
+#### judgeFn(result, times)
+
+JudgeFn is the second step, it receives tow params, the result from detectFn, and times this Job ran. this Function is for user to check if this detective got the truth, if so, return true. The job will be completed after that.
+
+#### executeFn(result, times)
+
+ExecuteFn is the last step of the Job, will be triggered when judgeFn return true.
 
 #### options
 

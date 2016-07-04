@@ -16,11 +16,11 @@ const createLogger = (logPath) => {
   })
 }
 
-const take = (jobName, { interval='1', logPath='detective.log' }) => {
+const take = (jobName, { interval=1, logPath='detective.log' }) => {
   let times = 0
   const logger = createLogger(logPath)
   return detect => {
-    const job = async judge => {
+    const job = judge => async trigger => {
       const res = await detect()
       if(!judge(res, ++times)) {
         if (typeof interval === 'function') {
@@ -28,13 +28,16 @@ const take = (jobName, { interval='1', logPath='detective.log' }) => {
         }
         logger.info(`${jobName} ran ${times} times`)
         sleep.sleep(interval)
-        job(judge)
+        job(judge)(trigger)
       } else {
+        await trigger(res, times)
         logger.info(`${jobName} completed`)
       }
     }
     return judge => {
-      return job(judge)
+      return trigger => {
+        return job(judge)(trigger)
+      }
     }
   }
 }
