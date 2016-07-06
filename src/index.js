@@ -1,17 +1,19 @@
 const take = (jobName, { interval=2000 }) => {
   return detect => {
-    const job = judge => async execute => {
-      const res = await detect()
-      if(!judge(res)) {
-        if (typeof interval === 'function') {
-          interval = interval()
+    const job = judge => execute => {
+      return detect().then((res) => {
+        if(!judge(res)) {
+          if (typeof interval === 'function') {
+            interval = interval()
+          }
+          setTimeout(() => {
+            job(judge)(execute)
+          }, interval)
+          return res
+        } else {
+          return execute(res)
         }
-        setTimeout(() => {
-          job(judge)(execute)
-        }, interval)
-      } else {
-        await execute(res)
-      }
+      })
     }
     return judge => {
       return execute => {
