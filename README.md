@@ -16,7 +16,7 @@ import fetch from 'node-fetch'
 
 detective.take('job', {
   interval: () => {
-    return 2000
+    return 2
   }
 })(() => {
   // step one
@@ -50,7 +50,7 @@ This is the only method of detective, with 3 steps to do its job.
 
 #### options
 
-* interval[Number|Function] the interval of the running job, default to be 2000
+* interval[Number|Function] the interval of the running job, default to be 2s
 
 #### detectFn
 
