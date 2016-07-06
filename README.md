@@ -16,7 +16,7 @@ import fetch from 'node-fetch'
 
 detective.take('job', {
   interval: () => {
-    return 2
+    return 2000
   }
 })(() => {
   // step one
@@ -50,7 +50,7 @@ This is the only method of detective, with 3 steps to do its job.
 
 #### options
 
-* interval[Number|Function] the interval(second) of the running job, default to be 1
+* interval[Number|Function] the interval of the running job, default to be 2000
 
 #### detectFn
 
@@ -58,7 +58,7 @@ DetectFn as the first step, should be a function and must return a `Promise`.
 
 #### judgeFn(result)
 
-JudgeFn is the second step, it receives tow params, the result from detectFn, and times this Job ran. this Function is for user to check if this detective got the truth, if so, return true. The job will be completed after that.
+JudgeFn is the second step, it receives just on param, the result from detectFn, this Function is for user to check if this detective got the truth, if so, return true. The job will be completed after that.
 
 #### executeFn(result)
 
